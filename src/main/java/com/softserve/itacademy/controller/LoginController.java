@@ -22,7 +22,7 @@ public class LoginController {
 
 
     @GetMapping({"/login-form"})
-    public String login(@RequestParam(name = "error") String error,  Model model) {
+    public String login(@RequestParam(name = "error", required = false) String error,  Model model) {
         if("true".equals(error)) model.addAttribute("error", error);
         return "login-form";
     }
