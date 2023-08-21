@@ -3,6 +3,7 @@ package com.softserve.itacademy.controller;
 import com.softserve.itacademy.model.User;
 import com.softserve.itacademy.service.RoleService;
 import com.softserve.itacademy.service.UserService;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.RolesAllowed;
 
 @Controller
 @RequestMapping("/users")
@@ -41,7 +41,7 @@ public class UserController {
         return "redirect:/todos/all/users/" + newUser.getId();
     }
 
-    //@PreAuthorize("authentication.principal.username == #username) || hasRole('ADMIN')")
+    @PreAuthorize("authentication.principal.userId == #id) || hasRole('ADMIN')")
     @GetMapping("/{id}/read")
     public String read(@PathVariable long id, Model model) {
         User user = userService.readById(id);
@@ -75,14 +75,14 @@ public class UserController {
         return "redirect:/users/" + id + "/read";
     }
 
-    @RolesAllowed("ADMIN")
+    @Secured("ADMIN")
     @GetMapping("/{id}/delete")
     public String delete(@PathVariable("id") long id) {
         userService.delete(id);
         return "redirect:/users/all";
     }
 
-    @RolesAllowed("ADMIN")
+    @Secured("ADMIN")
     @GetMapping("/all")
     public String getAll(Model model) {
         model.addAttribute("users", userService.getAll());

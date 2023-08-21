@@ -1,10 +1,9 @@
-package com.softserve.itacademy.sequrity;
+package com.softserve.itacademy.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,13 +16,14 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
+
         // Получение ролей пользователя
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
         // Проверка ролей и выполнение действий в зависимости от них
-        if (authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+        if (authorities.contains(new SimpleGrantedAuthority("ADMIN"))) {
             // Действия для администратора
-            response.sendRedirect("/admin-home");
+            response.sendRedirect("/home");
         } else if (authorities.contains(new SimpleGrantedAuthority("ROLE_USER"))) {
             // Действия для обычного пользователя
             response.sendRedirect("/user-home");
