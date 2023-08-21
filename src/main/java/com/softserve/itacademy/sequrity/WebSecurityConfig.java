@@ -22,11 +22,11 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
         jsr250Enabled = true)
 public class WebSecurityConfig {
     private final UserService userService;
-    private final AuthenticationSuccessHandler authenticationSuccessHandler;
+//    private final AuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        http.csrf().disable()
             .authorizeRequests()
             .anyRequest()
             .authenticated()
