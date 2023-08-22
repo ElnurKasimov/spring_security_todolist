@@ -22,8 +22,6 @@ public class UserController {
     private final RoleService roleService;
     private final PasswordEncoder encoder;
 
-
-
     @GetMapping("/create")
     public String create(Model model) {
         model.addAttribute("user", new User());
@@ -36,10 +34,12 @@ public class UserController {
             return "create-user";
         }
         String encodedPassword = encoder.encode(user.getPassword());
+        System.out.println("encodedPassword = " + encodedPassword);
         user.setPassword(encodedPassword);
         user.setRole(roleService.readById(2));
         User newUser = userService.create(user);
-        return "redirect:/todos/all/users/" + newUser.getId();
+//        return "redirect:/todos/all/users/" + newUser.getId();
+        return "redirect:/users/all";
     }
 
     @PreAuthorize("authentication.principal.userId == #id) || hasRole('ADMIN')")
@@ -83,7 +83,7 @@ public class UserController {
         return "redirect:/users/all";
     }
 
-    @Secured("ADMIN")
+//    @Secured("ADMIN")
     @GetMapping("/all")
     public String getAll(Model model) {
         model.addAttribute("users", userService.getAll());

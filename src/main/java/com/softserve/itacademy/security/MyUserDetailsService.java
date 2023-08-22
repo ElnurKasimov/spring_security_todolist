@@ -21,9 +21,11 @@ public class MyUserDetailsService implements UserDetailsService {
     private final UserService userService;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userService.findByEmail(email);
-        if (user == null) return null;
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("email = " + username);
+        User user = userService.findByEmail(username);
+        System.out.println("user = " + user);
+        if (user == null) throw new UsernameNotFoundException("User not found!");
         else {
             return new UserDetails() {
                 @Override

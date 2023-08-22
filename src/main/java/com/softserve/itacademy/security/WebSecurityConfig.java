@@ -27,6 +27,7 @@ public class WebSecurityConfig {
         http.csrf().disable()
             .authorizeRequests()
             .antMatchers("/users/create").permitAll()
+            .antMatchers("/users/all").permitAll()
             .anyRequest()
             .authenticated()
                     .and()
@@ -46,7 +47,7 @@ public class WebSecurityConfig {
 
     @Bean
     public AuthenticationSuccessHandler myAuthenticationSuccessHandler() {
-        return new MyAuthenticationSuccessHandler();
+        return new MyAuthenticationSuccessHandler(encoder(), userService);
     }
 
     @Bean
