@@ -21,16 +21,16 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
         // Проверка ролей и выполнение действий в зависимости от них
-        if (authorities.contains(new SimpleGrantedAuthority("ADMIN"))) {
-            // Действия для администратора
+//        if (authorities.contains(new SimpleGrantedAuthority("ADMIN"))) {
+//            // Действия для администратора
             response.sendRedirect("/home");
-        } else if (authorities.contains(new SimpleGrantedAuthority("ROLE_USER"))) {
-            // Действия для обычного пользователя
-            response.sendRedirect("/user-home");
-        } else {
-            // Действия по умолчанию
-            response.sendRedirect("/default-home");
-        }
+//        } else if (authorities.contains(new SimpleGrantedAuthority("USER"))) {
+//            // Действия для обычного пользователя
+//            response.sendRedirect("/user-home");
+//        } else {
+//            // Действия по умолчанию
+//            response.sendRedirect("/default-home");
+//        }
     }
 
 

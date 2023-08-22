@@ -10,6 +10,7 @@
 <div class="col-md-offset-2 col-sm-8">
     <h2>List of Users</h2>
     <form th:action="@{/users/create}" method="get">
+        <div th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"/>
         <div align="right">
             <input class="btn-info btn-lg" type="submit" value="Create new User">
         </div>
