@@ -1,9 +1,16 @@
-<div xmlns:th="http://www.thymeleaf.org">
+<div xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" th:href="@{/}">TODOs List</a>
             </div>
+
+<!--            <div align="right">-->
+<!--                <a th:href="@{/user/{id}/read">Logout</a>">-->
+<!--            </div>-->
+            <div align="right">
+                <a th:href="@{/logout}">Logout</a>
+        </div>
         </div>
     </nav>
 </div>

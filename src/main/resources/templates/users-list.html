@@ -38,7 +38,7 @@
                 <a th:href="@{|/users/${user.id}/update|}">Edit</a>
             </td>
             <td>
-                <a th:href="@{|/users/${user.id}/delete|}" sec:authorize="hasRole('ROLE_ADMIN')">Remove</a>
+                <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{|/users/${user.id}/delete|}" >Remove</a>
             </td>
         </tr>
     </table>

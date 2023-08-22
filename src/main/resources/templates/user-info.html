@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -44,7 +44,7 @@
         </table>
         <div>
             <a th:href="@{|/users/${user.id}/update|}">Edit</a>
-            <a th:href="@{|/users/${user.id}/delete|}">Remove</a>
+            <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{|/users/${user.id}/delete|}">Remove</a>
         </div>
     </div>
 </div>
