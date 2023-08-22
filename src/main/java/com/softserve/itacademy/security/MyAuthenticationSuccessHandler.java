@@ -25,7 +25,7 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
 
         // Проверка ролей и выполнение действий в зависимости от них
 
-        if (authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+//        if (authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
             // Действия для администратора
 
             response.sendRedirect("/home");
