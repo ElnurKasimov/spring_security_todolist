@@ -20,9 +20,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User create(User role) {
-        if (role != null) {
-            return userRepository.save(role);
+    public User create(User user) {
+        if (user != null) {
+            return userRepository.save(user);
         }
         throw new NullEntityReferenceException("User cannot be 'null'");
     }
@@ -34,10 +34,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User update(User role) {
-        if (role != null) {
-            readById(role.getId());
-            return userRepository.save(role);
+    public User update(User user) {
+        if (user != null) {
+            readById(user.getId());
+            return userRepository.save(user);
         }
         throw new NullEntityReferenceException("User cannot be 'null'");
     }
@@ -51,5 +51,10 @@ public class UserServiceImpl implements UserService {
     public List<User> getAll() {
         List<User> users = userRepository.findAll();
         return users.isEmpty() ? new ArrayList<>() : users;
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 }
