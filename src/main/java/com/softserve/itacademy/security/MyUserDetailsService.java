@@ -26,27 +26,13 @@ public class MyUserDetailsService implements UserDetailsService {
         User user = userService.findByEmail(username);
         System.out.println("user = " + user);
         if (user == null) throw new UsernameNotFoundException("User not found!");
-        else {
-            return new UserDetails() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
 
-                @Override
-                public Collection<? extends GrantedAuthority> getAuthorities() {
-                    SimpleGrantedAuthority authority = new SimpleGrantedAuthority(user.getRole().toString());
-                    return List.of(authority);
-                }
-                @Override
-                public String getPassword() {return user.getPassword();}
-                @Override
-                public String getUsername() {return user.getEmail();}
-                @Override
-                public boolean isAccountNonExpired() {return true;}
-                @Override
-                public boolean isAccountNonLocked() {return true;}
-                @Override
-                public boolean isCredentialsNonExpired() {return true;}
-                @Override
-                public boolean isEnabled() {return true;}
-            };
-        }
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                authorities
+        );
     }
 }
