@@ -26,11 +26,12 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .authorizeRequests()
+            .antMatchers("/users/create").permitAll()
             .anyRequest()
             .authenticated()
                     .and()
             .formLogin()
-            .loginPage("/login-form")
+            .loginPage("/login-form"). permitAll()
             .loginProcessingUrl("/login-form")
             .successHandler(myAuthenticationSuccessHandler())
             .failureUrl("/login-form?error=true")

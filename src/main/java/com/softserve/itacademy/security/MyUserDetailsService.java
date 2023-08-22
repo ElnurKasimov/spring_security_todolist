@@ -29,6 +29,7 @@ public class MyUserDetailsService implements UserDetailsService {
      public void setRoleService(RoleService roleService) {
           this.roleService=roleService;
      }
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userService.findByEmail(email);
