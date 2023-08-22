@@ -5,8 +5,11 @@
                 <a class="navbar-brand" th:href="@{/}">TODOs List</a>
             </div>
 
+            <div align="right" sec:authentication="name">
+
+            </div>
 <!--            <div align="right">-->
-<!--                <a th:href="@{/user/{id}/read">Logout</a>">-->
+<!--                <a th:href="@{/user/${id}/read" sec:authentication="principal.firstName">User Name</a>">-->
 <!--            </div>-->
             <div align="right">
                 <a th:href="@{/logout}">Logout</a>
