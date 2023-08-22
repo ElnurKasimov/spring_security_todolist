@@ -50,7 +50,8 @@ public class UserServiceImpl implements UserService {
     public void delete(long id) {
         userRepository.delete(readById(id));
     }
-    
+
+    @PostFilter("hasRole('ROLE_ADMIN') or filterObject.email == authentication.name")
     @Override
     public List<User> getAll() {
         List<User> users = userRepository.findAll();

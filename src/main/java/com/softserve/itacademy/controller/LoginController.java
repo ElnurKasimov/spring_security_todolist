@@ -47,9 +47,4 @@ public class LoginController {
         User newUser = userService.create(user);
         return "redirect:/todos/all/users/" + newUser.getId();
     }
-
-
-
-
-
 }

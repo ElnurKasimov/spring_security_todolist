@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -45,7 +45,7 @@
     <br>
     <h3>Collaborators:</h3>
     <span>
-        <form class="form-horizontal" th:action="@{/todos/{id}/add(id = ${todo.id})}" method="get">
+        <form th:if="${isOwner} or ${#authorization.expression('hasRole(''ADMIN'')')}" class="form-horizontal" th:action="@{/todos/{id}/add(id = ${todo.id})}" method="get">
             <select class="form-control" name="user_id" id="users">
                 <option>Select collaborator...</option>
                 <option th:each="user : ${users}" th:value="${user.id}"
@@ -63,7 +63,7 @@
                    th:text="${collaborator.firstName + ' ' + collaborator.lastName}"/>
             </td>
             <td>
-                <a th:href="@{/todos/{id}/remove(id = ${todo.id}, user_id = ${collaborator.id})}">Remove</a>
+                <a th:if="${isOwner} or ${#authorization.expression('hasRole(''ADMIN'')')}" th:href="@{/todos/{id}/remove(id = ${todo.id}, user_id = ${collaborator.id})}">Remove</a>
             </td>
         </tr>
     </table>

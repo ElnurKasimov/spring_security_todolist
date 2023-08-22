@@ -22,25 +22,25 @@ public class UserController {
     private final RoleService roleService;
     private final PasswordEncoder encoder;
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/create")
     public String create(Model model) {
         model.addAttribute("user", new User());
         return "create-user";
     }
-
+    @Secured("ROLE_ADMIN")
     @PostMapping("/create")
     public String create(@Validated @ModelAttribute("user") User user, BindingResult result) {
         if (result.hasErrors()) {
             return "create-user";
         }
 
-//        String encodedPassword = encoder.encode(user.getPassword());
-//        user.setPassword(encodedPassword);
+        String encodedPassword = encoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
 
         user.setRole(roleService.readById(2));
         User newUser = userService.create(user);
-//        return "redirect:/todos/all/users/" + newUser.getId();
-        return "redirect:/users/all";
+        return "redirect:/todos/all/users/" + newUser.getId();
     }
 
     @PreAuthorize("authentication.principal.userId == #id || hasRole('ADMIN')")
@@ -51,6 +51,7 @@ public class UserController {
         return "user-info";
     }
 
+    @PreAuthorize("hasRole('ADMIN') or @authenticatedUserService.hasId(#id)")
     @GetMapping("/{id}/update")
     public String update(@PathVariable long id, Model model) {
         User user = userService.readById(id);
@@ -84,7 +85,7 @@ public class UserController {
         return "redirect:/users/all";
     }
 
-//    @Secured("ADMIN")
+    @Secured("ADMIN")
     @GetMapping("/all")
     public String getAll(Model model) {
         model.addAttribute("users", userService.getAll());

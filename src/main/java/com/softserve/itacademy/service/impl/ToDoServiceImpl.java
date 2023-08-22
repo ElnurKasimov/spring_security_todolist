@@ -4,6 +4,9 @@ import com.softserve.itacademy.exception.NullEntityReferenceException;
 import com.softserve.itacademy.model.ToDo;
 import com.softserve.itacademy.repository.ToDoRepository;
 import com.softserve.itacademy.service.ToDoService;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreFilter;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -27,6 +30,7 @@ public class ToDoServiceImpl implements ToDoService {
         throw new NullEntityReferenceException("ToDo cannot be 'null'");
     }
 
+    //@PostFilter("hasRole('ADMIN') or @authenticatedUserService.isOwner(#todoId, #ownerId) or @authenticatedUserService.isCollaborator(#todoId, #ownerId)")
     @Override
     public ToDo readById(long id) {
         return todoRepository.findById(id).orElseThrow(
