@@ -6,10 +6,12 @@ import com.softserve.itacademy.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +25,9 @@ public class UserController {
 
     private final UserService userService;
     private final RoleService roleService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public UserController(UserService userService, RoleService roleService) {
         this.userService = userService;
@@ -42,7 +47,7 @@ public class UserController {
         if (result.hasErrors()) {
             return "create-user";
         }
-        user.setPassword(user.getPassword());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(roleService.readById(2));
         User newUser = userService.create(user);
         return "redirect:/todos/all/users/" + newUser.getId();
@@ -55,7 +60,7 @@ public class UserController {
         model.addAttribute("user", user);
         return "user-info";
     }
-
+    @PreAuthorize("hasRole('ADMIN') or @authenticatedUserService.hasId(#id)")
     @GetMapping("/{id}/update")
     public String update(@PathVariable long id, Model model) {
         User user = userService.readById(id);
@@ -83,6 +88,7 @@ public class UserController {
     }
 
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/{id}/delete")
     public String delete(@PathVariable("id") long id) {
         userService.delete(id);

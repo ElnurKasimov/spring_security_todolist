@@ -4,6 +4,9 @@ import com.softserve.itacademy.model.Role;
 import com.softserve.itacademy.model.User;
 import com.softserve.itacademy.service.RoleService;
 import com.softserve.itacademy.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,21 +17,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-//@RequiredArgsConstructor
-@Service
+@RequiredArgsConstructor
+//@Service
 public class MyUserDetailsService implements UserDetailsService {
-    private UserService userService;
-    private RoleService roleService;
+    private final UserService userService;
+    private final RoleService roleService;
 
-     @Autowired
-     public void setUserService(UserService userService) {
-          this.userService=userService;
-     }
+     Logger logger = LoggerFactory.getLogger("SampleLogger");
 
-     @Autowired
-     public void setRoleService(RoleService roleService) {
-          this.roleService=roleService;
-     }
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userService.findByEmail(email);
@@ -41,9 +37,8 @@ public class MyUserDetailsService implements UserDetailsService {
                    Set<GrantedAuthority> authorities
                        = new HashSet<>();
                    for (Role role: roles) {
-                        authorities.add(new SimpleGrantedAuthority(role.getName()));
+                        authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
                    }
-
                    return authorities;
               }
 
@@ -51,6 +46,8 @@ public class MyUserDetailsService implements UserDetailsService {
               public String getPassword() {return user.getPassword();}
                @Override
               public String getUsername() {return user.getEmail();}
+
+                public long getId() {return user.getId();}
                @Override
               public boolean isAccountNonExpired() {return true;}
                @Override
