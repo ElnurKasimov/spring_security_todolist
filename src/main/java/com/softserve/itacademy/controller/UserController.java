@@ -33,16 +33,17 @@ public class UserController {
         if (result.hasErrors()) {
             return "create-user";
         }
-        String encodedPassword = encoder.encode(user.getPassword());
-        System.out.println("encodedPassword = " + encodedPassword);
-        user.setPassword(encodedPassword);
+
+//        String encodedPassword = encoder.encode(user.getPassword());
+//        user.setPassword(encodedPassword);
+
         user.setRole(roleService.readById(2));
         User newUser = userService.create(user);
 //        return "redirect:/todos/all/users/" + newUser.getId();
         return "redirect:/users/all";
     }
 
-    @PreAuthorize("authentication.principal.userId == #id) || hasRole('ADMIN')")
+    @PreAuthorize("authentication.principal.userId == #id || hasRole('ADMIN')")
     @GetMapping("/{id}/read")
     public String read(@PathVariable long id, Model model) {
         User user = userService.readById(id);

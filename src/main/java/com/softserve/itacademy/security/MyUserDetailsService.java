@@ -28,6 +28,7 @@ public class MyUserDetailsService implements UserDetailsService {
         if (user == null) throw new UsernameNotFoundException("User not found!");
         else {
             return new UserDetails() {
+
                 @Override
                 public Collection<? extends GrantedAuthority> getAuthorities() {
                     SimpleGrantedAuthority authority = new SimpleGrantedAuthority(user.getRole().toString());
