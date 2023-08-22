@@ -25,8 +25,9 @@ public class AuthenticatedUserService {
           return user.getId()==id;
      }
 
-     public boolean isOwner(long id, ToDo toDo){
-          return toDo.getOwner().getId()==id;
+     public boolean isOwner(long todoId, long userId){
+          ToDo toDo = toDoService.readById(todoId);
+          return toDo.getOwner().getId()==userId;
      }
 
 }
