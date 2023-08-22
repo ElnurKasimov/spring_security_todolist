@@ -90,6 +90,7 @@ public class ToDoController {
     }
 
     @GetMapping("/all/users/{user_id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String getAll(@PathVariable("user_id") long userId, Model model) {
         List<ToDo> todos = todoService.getByUserId(userId);
         model.addAttribute("todos", todos);

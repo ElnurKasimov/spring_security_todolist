@@ -4,6 +4,7 @@ import com.softserve.itacademy.model.User;
 import com.softserve.itacademy.service.RoleService;
 import com.softserve.itacademy.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/users")
@@ -33,14 +35,14 @@ public class UserController {
         if (result.hasErrors()) {
             return "create-user";
         }
-
-//        String encodedPassword = encoder.encode(user.getPassword());
-//        user.setPassword(encodedPassword);
-
+        String encodedPassword = encoder.encode(user.getPassword());
+        log.info("PASSWORD - {},  ENCODED - {} ", user.getPassword(), encodedPassword);
+        String encodedPassword2 = encoder.encode(user.getPassword());
+        log.info("PASSWORD - {},  ENCODED2 - {} ", user.getPassword(), encodedPassword2);
+        user.setPassword(encodedPassword);
         user.setRole(roleService.readById(2));
         User newUser = userService.create(user);
-//        return "redirect:/todos/all/users/" + newUser.getId();
-        return "redirect:/users/all";
+        return "redirect:/todos/all/users/" + newUser.getId();
     }
 
     @PreAuthorize("authentication.principal.userId == #id || hasRole('ADMIN')")
