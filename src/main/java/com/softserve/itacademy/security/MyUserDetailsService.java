@@ -25,6 +25,8 @@ public class MyUserDetailsService implements UserDetailsService {
 
      Logger logger = LoggerFactory.getLogger("SampleLogger");
 
+
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userService.findByEmail(email);
