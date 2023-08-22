@@ -3,26 +3,26 @@ package com.softserve.itacademy.controller;
 import com.softserve.itacademy.model.User;
 import com.softserve.itacademy.service.RoleService;
 import com.softserve.itacademy.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
     private final RoleService roleService;
+    private final PasswordEncoder encoder;
 
-    public UserController(UserService userService, RoleService roleService) {
-        this.userService = userService;
-        this.roleService = roleService;
-    }
+
 
     @GetMapping("/create")
     public String create(Model model) {
@@ -35,7 +35,8 @@ public class UserController {
         if (result.hasErrors()) {
             return "create-user";
         }
-        user.setPassword(user.getPassword());
+        String encodedPassword = encoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
         user.setRole(roleService.readById(2));
         User newUser = userService.create(user);
         return "redirect:/todos/all/users/" + newUser.getId();
