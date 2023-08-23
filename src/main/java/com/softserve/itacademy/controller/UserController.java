@@ -22,13 +22,13 @@ public class UserController {
     private final RoleService roleService;
     private final PasswordEncoder encoder;
 
-    @Secured("ROLE_ADMIN")
+    //@Secured("ROLE_ADMIN")
     @GetMapping("/create")
     public String create(Model model) {
         model.addAttribute("user", new User());
         return "create-user";
     }
-    @Secured("ROLE_ADMIN")
+    //@Secured("ROLE_ADMIN")
     @PostMapping("/create")
     public String create(@Validated @ModelAttribute("user") User user, BindingResult result) {
         if (result.hasErrors()) {
