@@ -9,7 +9,7 @@
 <div th:replace="header"></div>
 <div class="col-md-offset-2 col-sm-8">
     <h2>List of Users</h2>
-        <form sec:authorize="hasRole('ROLE_ADMIN')" th:action="@{/users/create}" method="get">
+        <form th:if="${#authorization.expression('hasRole(''ADMIN'')')}" th:action="@{/users/create}" method="get">
             <div align="right">
                 <input class="btn-info btn-lg" type="submit" value="Create new User">
             </div>

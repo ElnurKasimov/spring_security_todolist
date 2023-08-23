@@ -1,6 +1,7 @@
 package com.softserve.itacademy.security;
 
 import com.softserve.itacademy.service.UserService;
+import com.softserve.itacademy.service.impl.MyAccessDeniedHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Slf4j
@@ -30,6 +32,8 @@ public class WebSecurityConfig extends GlobalMethodSecurityConfiguration {
     @Qualifier("userDetailsService")
     UserDetailsService userDetailsService;
     private final UserService userService;
+
+    private final MyAccessDeniedHandler accessDeniedHandler;
 
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(encoder());
@@ -48,12 +52,14 @@ public class WebSecurityConfig extends GlobalMethodSecurityConfiguration {
                 .loginProcessingUrl("/login-form")
                 .successHandler(myAuthenticationSuccessHandler())
                 .failureUrl("/login-form?error=true")
-                . permitAll()
+                .permitAll()
                 .and()
                 .logout()
                 .permitAll()
                 .logoutUrl("/logout")
-                .deleteCookies("JSESSIONID");
+                .deleteCookies("JSESSIONID")
+                .and()
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler);
         return http.build();
     }
 

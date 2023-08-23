@@ -47,4 +47,9 @@ public class LoginController {
         User newUser = userService.create(user);
         return "redirect:/todos/all/users/" + newUser.getId();
     }
+
+    @GetMapping("/403")
+    public String error403() {
+        return "error/403";
+    }
 }
