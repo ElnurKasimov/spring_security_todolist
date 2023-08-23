@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -33,10 +33,10 @@
             <td th:text="${#temporals.format(todo.createdAt, 'dd.MM.yyyy HH:mm')}"/>
             <td th:text="${todo.getOwner().firstName + ' ' + todo.getOwner().lastName}"></td>
             <td>
-                <a th:href="@{|/todos/${todo.id}/update/users/${todo.owner.id}|}">Edit</a>
+                <a th:if="${isOwner} or ${#authorization.expression('hasRole(''ADMIN'')')}" th:href="@{|/todos/${todo.id}/update/users/${todo.owner.id}|}">Edit</a>
             </td>
             <td>
-                <a th:href="@{|/todos/${todo.id}/delete/users/${todo.owner.id}|}">Remove</a>
+                <a th:if="${isOwner} or ${#authorization.expression('hasRole(''ADMIN'')')}" th:href="@{|/todos/${todo.id}/delete/users/${todo.owner.id}|}">Remove</a>
             </td>
         </tr>
     </table>
